@@ -1,0 +1,1 @@
+export const dbName = "stock_api"
