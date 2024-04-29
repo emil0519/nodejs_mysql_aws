@@ -64,7 +64,7 @@ const seedStockRevenue = async (): Promise<void> => {
     })
   );
 };
-const initDB = async (): Promise<void> => {
+export const initDB = async (): Promise<void> => {
   try {
     await pool.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`);
     await pool.query(`USE ${dbName}`);
@@ -79,7 +79,7 @@ const initDB = async (): Promise<void> => {
 
 // TOASK: OOP or functional programming as best practice?
 
-const getAllStockInfo = async (): Promise<StockInfo[]> => {
+export const getAllStockInfo = async (): Promise<StockInfo[]> => {
   await pool.query(`USE ${dbName}`);
   // TOASK: how to type the query result with correct type without having errors?
   const [rows] = await pool.query<any>(
@@ -88,7 +88,7 @@ const getAllStockInfo = async (): Promise<StockInfo[]> => {
   return rows;
 };
 
-const getSpecificStockInfo = async (stockId: number): Promise<StockInfo[]> => {
+export const getSpecificStockInfo = async (stockId: number): Promise<StockInfo[]> => {
   await pool.query(`USE ${dbName}`);
   // TOASK: how to type the query result with correct type without having errors?
   // use prepared statement, provide values in 2nd paramter to avoid SQL injection, with ?, stockId will be treat as value but not directly execute
@@ -113,5 +113,3 @@ const createStockInfo = async (
   );
   return result;
 };
-initDB();
-getSpecificStockInfo(2330);

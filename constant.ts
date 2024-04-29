@@ -4,6 +4,15 @@ export const dbName = "stock_api";
 export const STOCK_BASIC_INFO_TABLE = "stock_basic_info";
 export const STOCK_REVENUE_TABLE = "stock_revenue";
 
+export enum FirmmindDataTypeEnum {
+  TaiwanStockInfo = "TaiwanStockInfo",
+  TaiwanStockMonthRevenue = "TaiwanStockMonthRevenue",
+}
+
+export const errorResponse = {
+  
+}
+
 export const placeholderForBasicInfo:StockInfo[] = [
   {
     industry_category: "半導體業",

@@ -5,4 +5,6 @@ export interface StockInfo {
     type: string;
     date: string;
    }
+
+   
    
