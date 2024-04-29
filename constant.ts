@@ -1,8 +1,10 @@
+import { StockInfo } from "./type";
+
 export const dbName = "stock_api";
 export const STOCK_BASIC_INFO_TABLE = "stock_basic_info";
 export const STOCK_REVENUE_TABLE = "stock_revenue";
 
-export const placeholderForBasicInfo = [
+export const placeholderForBasicInfo:StockInfo[] = [
   {
     industry_category: "半導體業",
     stock_id: "2330",
