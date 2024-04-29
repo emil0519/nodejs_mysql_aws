@@ -1,0 +1,1 @@
+INSERT INTO stock_revenue (date, stock_id, country, revenue, revenue_month, revenue_year) VALUES (?, ?, ?, ?, ?, ?);
