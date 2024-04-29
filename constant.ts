@@ -2,7 +2,7 @@ export const dbName = "stock_api";
 export const STOCK_BASIC_INFO_TABLE = "stock_basic_info";
 
 
-export const placeholderData = [
+export const placeholderForBasicInfo = [
   {
     industry_category: "半導體業",
     stock_id: "2330",
