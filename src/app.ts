@@ -6,6 +6,7 @@ import { ResponseClass } from "./domain/response";
 
 const app = express();
 const port = 3002;
+app.use(express.json())
 
 // TOASK: Why app.use is necessary
 app.use((req, res, next) => {

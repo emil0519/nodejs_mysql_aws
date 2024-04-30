@@ -12,7 +12,7 @@ import { StockInfo } from "../type";
 dotenv.config();
 
 // create pool, a series of connection to mysql instead of one connection at a time of create connection
-const pool = mysql
+export const pool = mysql
   .createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,

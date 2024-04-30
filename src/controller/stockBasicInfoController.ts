@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { FirmmindDataTypeEnum, HttpStatus } from "../constant";
 import { getSpecificStockInfo, getAllStockInfo } from "./database";
 import { ResponseClass } from "../domain/response";
+import { StockInfo } from "../type";
 
 // TOASK: it will cluster all logic here, how to avoid?
 export const getBasicInfo = async (req: Request, res: Response) => {
@@ -67,4 +68,25 @@ export const getBasicInfo = async (req: Request, res: Response) => {
         )
       );
   }
+};
+
+export const createBasicInfo = async (req: Request, res: Response) => {
+  const body: StockInfo = req.body;
+  if (await isBodyValidated(body)) console.log("hello");
+  res.send(req.body);
+};
+
+const isBodyValidated = async (body: StockInfo): Promise<boolean> => {
+  const specificStockInfo = await getSpecificStockInfo(Number(body.stock_id));
+
+  return true;
+};
+
+// request body:
+const request = {
+  industry_category: "半導體業",
+  stock_id: "2330",
+  stock_name: "台積電",
+  type: "twse",
+  date: "2024-04-27",
 };
