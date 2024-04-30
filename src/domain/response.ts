@@ -1,4 +1,4 @@
-export class Response<T> {
+export class ResponseClass<T> {
   public msg: string;
   public status: number;
   public data: T;

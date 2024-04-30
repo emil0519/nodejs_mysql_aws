@@ -1,8 +1,8 @@
 import express from "express";
-import { initDB } from "./controller/stock.controller";
+import { initDB } from "./controller/database";
 import stockRoute from "./route/stock.route";
 import { HttpStatus } from "./constant";
-import { Response } from "./domain/response";
+import { ResponseClass } from "./domain/response";
 
 const app = express();
 const port = 3002;
@@ -26,9 +26,9 @@ app.listen(port, async () => {
 app.use(stockRoute);
 
 app.get("/", (req, res) =>
-  res.send(new Response("API running, please fetch specific endpoint", HttpStatus.OK.code))
+  res.send(new ResponseClass("API running, please fetch specific endpoint", HttpStatus.OK.code))
 );
 
 app.get("*", (req, res) =>
-  res.send(new Response("API running, this is not valid endpoint", HttpStatus.OK.code))
+  res.send(new ResponseClass("API running, this is not valid endpoint", HttpStatus.OK.code))
 );
