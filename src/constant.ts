@@ -9,6 +9,15 @@ export enum FirmmindDataTypeEnum {
   TaiwanStockMonthRevenue = "TaiwanStockMonthRevenue",
 }
 
+export const HttpStatus = {
+  OK: { code: 200, status: 'success' },
+  CREATED: { code: 201, status: 'created' },
+  NO_CONTENT: { code: 204, status: 'no_content' },
+  BAD_REQUEST: { code: 400, status: 'bad_request' },
+  NOT_FOUND: { code: 404, status: 'not_found' },
+  INTERNAL_SERVER_ERROR: { code: 500, status: 'internal_server_error' }
+};
+
 export const placeholderForBasicInfo:StockInfo[] = [
   {
     industry_category: "半導體業",
