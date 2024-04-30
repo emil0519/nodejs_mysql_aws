@@ -10,19 +10,23 @@ CREATE TABLE IF NOT EXISTS stock_basic_info (
     PRIMARY KEY (stock_id)
 );
 
--- [
---     {
---         "industry_category": "半導體業",
---         "stock_id": "2330",
---         "stock_name": "台積電",
---         "type": "twse",
---         "date": "2024-04-27"
---     },
---     {
---         "industry_category": "電子工業",
---         "stock_id": "2330",
---         "stock_name": "台積電",
---         "type": "twse",
---         "date": "2024-04-27"
---     }
--- ]
+-- {
+--     "msg": "success",
+--     "status": 200,
+--     "data": [
+--         {
+--             "industry_category": "半導體業",
+--             "stock_id": "2330",
+--             "stock_name": "台積電",
+--             "type": "twse",
+--             "date": "2024-04-27"
+--         },
+--         {
+--             "industry_category": "電子工業",
+--             "stock_id": "2330",
+--             "stock_name": "台積電",
+--             "type": "twse",
+--             "date": "2024-04-27"
+--         }
+--     ]
+-- }

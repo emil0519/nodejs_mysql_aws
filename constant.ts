@@ -9,10 +9,6 @@ export enum FirmmindDataTypeEnum {
   TaiwanStockMonthRevenue = "TaiwanStockMonthRevenue",
 }
 
-export const errorResponse = {
-  
-}
-
 export const placeholderForBasicInfo:StockInfo[] = [
   {
     industry_category: "半導體業",

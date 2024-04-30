@@ -1,6 +1,8 @@
 import express from "express";
 import { getAllStockInfo, getSpecificStockInfo, initDB } from "./database";
 import { FirmmindDataTypeEnum } from "./constant";
+import { Response } from "./domain/response";
+import { StockInfo } from "./type";
 
 const app = express();
 const port = 3002;
@@ -12,9 +14,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.listen(port, () => {
+app.listen(port, async() => {
   try {
-    // await initDB()
+    await initDB()
     console.log(`server running on ${port}`);
   } catch (errors) {
     console.log(`app start error:${errors}`);
@@ -27,12 +29,12 @@ app.get(`/api/data`, async (req, res) => {
   if(dataset === FirmmindDataTypeEnum.TaiwanStockInfo){
     if(stockId){
       const specificStockInfo = await getSpecificStockInfo(Number(stockId));
-      if(!specificStockInfo.length) return res.status(404).send("Error: Data not found")
-      return res.send(specificStockInfo);    
+      if(!specificStockInfo.length) return res.send(new Response<unknown>("not_found",204))
+      return res.send(new Response<StockInfo[]>("success",200,specificStockInfo));    
     }
     const allStockInfo = await getAllStockInfo();
-    return res.send(allStockInfo);  
+    return res.send(new Response<StockInfo[]>("success",200,allStockInfo));  
   }
-  res.status(404).send("Error: Data not found")
+  res.status(404).send(new Response<unknown>("not_found",404))
 });
 

@@ -20,6 +20,19 @@ const pool = mysql
   })
   .promise();
 
+export const initDB = async (): Promise<void> => {
+  try {
+    await pool.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`);
+    await pool.query(`USE ${dbName}`);
+    await pool.query(query.CREATE_STOCK_BASIC_INFO_IF_NOT_EXIST);
+    await pool.query(query.CREATE_STOCK_REVENUE_IF_NOT_EXIST);
+    if (await isTableEmpty(STOCK_BASIC_INFO_TABLE)) await seedStockInfo();
+    // if (await isTableEmpty(STOCK_REVENUE_TABLE)) await seedStockRevenue();
+  } catch (error) {
+    console.log("this is error", error);
+  }
+};
+
 const isTableEmpty = async (table: string): Promise<boolean> => {
   const [result]: any = await pool.query(
     `SELECT COUNT(*) as total FROM ${table}`
@@ -64,19 +77,6 @@ const seedStockRevenue = async (): Promise<void> => {
     })
   );
 };
-export const initDB = async (): Promise<void> => {
-  try {
-    await pool.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`);
-    await pool.query(`USE ${dbName}`);
-    await pool.query(query.CREATE_STOCK_BASIC_INFO_IF_NOT_EXIST);
-    await pool.query(query.CREATE_STOCK_REVENUE_IF_NOT_EXIST);
-    if (await isTableEmpty(STOCK_BASIC_INFO_TABLE)) await seedStockInfo();
-    if (await isTableEmpty(STOCK_REVENUE_TABLE)) await seedStockRevenue();
-  } catch (error) {
-    console.log("this is error", error);
-  }
-};
-
 // TOASK: OOP or functional programming as best practice?
 
 export const getAllStockInfo = async (): Promise<StockInfo[]> => {
@@ -88,7 +88,9 @@ export const getAllStockInfo = async (): Promise<StockInfo[]> => {
   return rows;
 };
 
-export const getSpecificStockInfo = async (stockId: number): Promise<StockInfo[]> => {
+export const getSpecificStockInfo = async (
+  stockId: number
+): Promise<StockInfo[]> => {
   await pool.query(`USE ${dbName}`);
   // TOASK: how to type the query result with correct type without having errors?
   // use prepared statement, provide values in 2nd paramter to avoid SQL injection, with ?, stockId will be treat as value but not directly execute
