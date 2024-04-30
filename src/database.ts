@@ -27,7 +27,7 @@ export const initDB = async (): Promise<void> => {
     await pool.query(query.CREATE_STOCK_BASIC_INFO_IF_NOT_EXIST);
     await pool.query(query.CREATE_STOCK_REVENUE_IF_NOT_EXIST);
     if (await isTableEmpty(STOCK_BASIC_INFO_TABLE)) await seedStockInfo();
-    // if (await isTableEmpty(STOCK_REVENUE_TABLE)) await seedStockRevenue();
+    if (await isTableEmpty(STOCK_REVENUE_TABLE)) await seedStockRevenue();
   } catch (error) {
     console.log("this is error", error);
   }
