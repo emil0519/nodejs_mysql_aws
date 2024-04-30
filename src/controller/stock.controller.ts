@@ -5,10 +5,10 @@ import {
   dbName,
   placeholderForBasicInfo,
   placeholderForStockRevenue,
-} from "./constant";
+} from "../constant";
 import dotenv from "dotenv";
-import { query } from "./query";
-import { StockInfo } from "./type";
+import { query } from "../query";
+import { StockInfo } from "../type";
 dotenv.config();
 
 // create pool, a series of connection to mysql instead of one connection at a time of create connection
@@ -77,6 +77,7 @@ const seedStockRevenue = async (): Promise<void> => {
     })
   );
 };
+
 // TOASK: OOP or functional programming as best practice?
 
 export const getAllStockInfo = async (): Promise<StockInfo[]> => {
