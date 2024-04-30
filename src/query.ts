@@ -1,19 +1,20 @@
 import fs from "fs/promises";
+
 const CREATE_STOCK_BASIC_INFO_IF_NOT_EXIST = await fs.readFile(
-  "./query/basicInfo/CREATE_STOCK_BASIC_INFO_IF_NOT_EXIST.sql",
+  "./src/query/basicInfo/CREATE_STOCK_BASIC_INFO_IF_NOT_EXIST.sql",
   { encoding: "utf8" }
 );
 const CREATE_STOCK_REVENUE_IF_NOT_EXIST = await fs.readFile(
-  "./query/stockRevenue/CREATE_STOCK_REVENUE_IF_NOT_EXIST.sql",
+  "./src/query/stockRevenue/CREATE_STOCK_REVENUE_IF_NOT_EXIST.sql",
   { encoding: "utf8" }
 );
 const INSERT_STOCK_INFO = await fs.readFile(
-  "./query/basicInfo/INSERT_STOCK_INFO.sql",
+  "./src/query/basicInfo/INSERT_STOCK_INFO.sql",
   { encoding: "utf8" }
 );
 
 const INSERT_STOCK_REVENUE = await fs.readFile(
-  "./query/stockRevenue/INSERT_STOCK_REVENUE.sql",
+  "./src/query/stockRevenue/INSERT_STOCK_REVENUE.sql",
   { encoding: "utf8" }
 );
 

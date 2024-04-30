@@ -1,8 +1,24 @@
+import { StockInfo } from "./type";
+
 export const dbName = "stock_api";
 export const STOCK_BASIC_INFO_TABLE = "stock_basic_info";
 export const STOCK_REVENUE_TABLE = "stock_revenue";
 
-export const placeholderForBasicInfo = [
+export enum FirmmindDataTypeEnum {
+  TaiwanStockInfo = "TaiwanStockInfo",
+  TaiwanStockMonthRevenue = "TaiwanStockMonthRevenue",
+}
+
+export const HttpStatus = {
+  OK: { code: 200, status: 'success' },
+  CREATED: { code: 201, status: 'created' },
+  NO_CONTENT: { code: 204, status: 'no_content' },
+  BAD_REQUEST: { code: 400, status: 'bad_request' },
+  NOT_FOUND: { code: 404, status: 'not_found' },
+  INTERNAL_SERVER_ERROR: { code: 500, status: 'internal_server_error' }
+};
+
+export const placeholderForBasicInfo:StockInfo[] = [
   {
     industry_category: "半導體業",
     stock_id: "2330",
