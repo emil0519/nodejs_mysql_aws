@@ -90,29 +90,26 @@ export const getAllStockInfo = async (): Promise<StockInfo[]> => {
 };
 
 export const getSpecificStockInfo = async (
-  stockId: number
+  input: number | string,
+  variant: "stock_id" | "stock_name"
 ): Promise<StockInfo[]> => {
   await pool.query(`USE ${dbName}`);
   // TOASK: how to type the query result with correct type without having errors?
   // use prepared statement, provide values in 2nd paramter to avoid SQL injection, with ?, stockId will be treat as value but not directly execute
   const [rows] = await pool.query<any>(
-    `SELECT * FROM ${STOCK_BASIC_INFO_TABLE} WHERE stock_id = ?`,
-    stockId
+    `SELECT * FROM ${STOCK_BASIC_INFO_TABLE} WHERE ${variant} = ?`,
+    input
   );
   return rows;
 };
 
-const createStockInfo = async (
-  industryCategory: string,
-  stockId: string,
-  stockName: string,
-  type: string,
-  date: string
+export const createStockInfo = async (
+  stockInfo: StockInfo
 ): Promise<mysql.QueryResult> => {
   await pool.query(`USE ${dbName}`);
   const [result] = await pool.query(
     `INSERT stock_basic_info (industry_category, stock_id, stock_name, type, date)`,
-    [industryCategory, stockId, stockName, type, date]
+    [stockInfo.industry_category, stockInfo.stock_id, stockInfo.stock_name, stockInfo.type, stockInfo.date]
   );
   return result;
 };

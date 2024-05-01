@@ -1,8 +1,13 @@
 import { Request, Response } from "express";
-import { FirmmindDataTypeEnum, HttpStatus } from "../constant";
-import { getSpecificStockInfo, getAllStockInfo } from "./database";
+import { FirmmindDataTypeEnum, HttpStatus, HttpStatusEnum } from "../constant";
+import {
+  getSpecificStockInfo,
+  getAllStockInfo,
+  createStockInfo,
+} from "./database";
 import { ResponseClass } from "../domain/response";
 import { StockInfo } from "../type";
+import { sendData } from "./utils";
 
 // TOASK: it will cluster all logic here, how to avoid?
 export const getBasicInfo = async (req: Request, res: Response) => {
@@ -11,7 +16,10 @@ export const getBasicInfo = async (req: Request, res: Response) => {
   if (dataset === FirmmindDataTypeEnum.TaiwanStockInfo) {
     try {
       if (dataId) {
-        const specificStockInfo = await getSpecificStockInfo(Number(dataId));
+        const specificStockInfo = await getSpecificStockInfo(
+          Number(dataId),
+          "stock_id"
+        );
         if (specificStockInfo.length) {
           return res.send(
             new ResponseClass(
@@ -72,21 +80,36 @@ export const getBasicInfo = async (req: Request, res: Response) => {
 
 export const createBasicInfo = async (req: Request, res: Response) => {
   const body: StockInfo = req.body;
-  if (await isBodyValidated(body)) console.log("hello");
-  res.send(req.body);
+  if (await isStockExist(body)) {
+    return sendData(res, HttpStatusEnum.CONFLICT, body);
+  }
+  try {
+    await createStockInfo(body);
+    return res.send(
+      new ResponseClass(HttpStatus.OK.status, HttpStatus.OK.code, body)
+    );
+  } catch (error) {
+    res
+      .status(HttpStatus.INTERNAL_SERVER_ERROR.code)
+      .send(
+        new ResponseClass(
+          HttpStatus.INTERNAL_SERVER_ERROR.status,
+          HttpStatus.INTERNAL_SERVER_ERROR.code
+        )
+      );
+  }
 };
 
-const isBodyValidated = async (body: StockInfo): Promise<boolean> => {
-  const specificStockInfo = await getSpecificStockInfo(Number(body.stock_id));
-
-  return true;
-};
-
-// request body:
-const request = {
-  industry_category: "半導體業",
-  stock_id: "2330",
-  stock_name: "台積電",
-  type: "twse",
-  date: "2024-04-27",
+const isStockExist = async (body: StockInfo): Promise<boolean> => {
+  const specificStockInfoWithID = await getSpecificStockInfo(
+    Number(body.stock_id),
+    "stock_id"
+  );
+  const specificStockInfoWithName = await getSpecificStockInfo(
+    body.stock_name,
+    "stock_name"
+  );
+  if (specificStockInfoWithID.length || specificStockInfoWithName.length)
+    return true;
+  return false;
 };

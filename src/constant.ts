@@ -15,8 +15,20 @@ export const HttpStatus = {
   NO_CONTENT: { code: 204, status: 'no_content' },
   BAD_REQUEST: { code: 400, status: 'bad_request' },
   NOT_FOUND: { code: 404, status: 'not_found' },
+  CONFLICT: {code: 409, status: 'duplicate_data'},
   INTERNAL_SERVER_ERROR: { code: 500, status: 'internal_server_error' }
 };
+
+export enum HttpStatusEnum {
+  OK = "OK",
+  CREATED = "CREATED",
+  NO_CONTENT = "NO_CONTENT",
+  BAD_REQUEST = "BAD_REQUEST",
+  NOT_FOUND = "NOT_FOUND",
+  CONFLICT = "CONFLICT",
+  INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR"
+}
+
 
 export const placeholderForBasicInfo:StockInfo[] = [
   {
