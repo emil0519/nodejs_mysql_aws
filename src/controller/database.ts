@@ -8,11 +8,11 @@ import {
 } from "../constant";
 import dotenv from "dotenv";
 import { query } from "../query";
-import { StockInfo } from "../type";
+import { StockInfo, StockInfoDeleteRequestType, StockInfoWithNewIdType } from "../type";
 dotenv.config();
 
 // create pool, a series of connection to mysql instead of one connection at a time of create connection
-const pool = mysql
+export const pool = mysql
   .createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -90,29 +90,80 @@ export const getAllStockInfo = async (): Promise<StockInfo[]> => {
 };
 
 export const getSpecificStockInfo = async (
-  stockId: number
+  input: number | string,
+  variant: "stock_id" | "stock_name"
 ): Promise<StockInfo[]> => {
   await pool.query(`USE ${dbName}`);
   // TOASK: how to type the query result with correct type without having errors?
   // use prepared statement, provide values in 2nd paramter to avoid SQL injection, with ?, stockId will be treat as value but not directly execute
   const [rows] = await pool.query<any>(
-    `SELECT * FROM ${STOCK_BASIC_INFO_TABLE} WHERE stock_id = ?`,
-    stockId
+    `SELECT * FROM ${STOCK_BASIC_INFO_TABLE} WHERE ${variant} = ?`,
+    input
   );
   return rows;
 };
 
-const createStockInfo = async (
-  industryCategory: string,
-  stockId: string,
-  stockName: string,
-  type: string,
-  date: string
+export const createStockInfo = async (
+  stockInfo: StockInfo
 ): Promise<mysql.QueryResult> => {
   await pool.query(`USE ${dbName}`);
   const [result] = await pool.query(
-    `INSERT stock_basic_info (industry_category, stock_id, stock_name, type, date)`,
-    [industryCategory, stockId, stockName, type, date]
+    `INSERT INTO stock_basic_info (industry_category, stock_id, stock_name, type, date) VALUES (?, ?, ?, ?, ?)`,
+    [
+      stockInfo.industry_category,
+      stockInfo.stock_id,
+      stockInfo.stock_name,
+      stockInfo.type,
+      stockInfo.date,
+    ]
+  );
+  return result;
+};
+
+export const deleteStockInfo = async(stockId: StockInfoDeleteRequestType["stock_id"]) =>{
+  await pool.query(`USE ${dbName}`);
+  const [result] = await pool.query(
+    `DELETE FROM stock_basic_info WHERE stock_id = ?`,
+    stockId
+  );
+  return result;
+}
+
+export const updateStockInfo = async (stockInfo: StockInfoWithNewIdType) => {
+  await pool.query(`USE ${dbName}`);
+  const entries = Object.entries(stockInfo);
+  // modify stock_id base on new_stock_id in request body
+  const keyList = entries
+    .map(([key, _]) => {
+      switch (key) {
+        case "stock_id":
+          return null;
+        case "new_stock_id":
+          return "stock_id = ?";
+        default:
+          return `${key} = ?`;
+      }
+    })
+    .filter((part) => part !== null)
+    .join(", ");
+
+  const valueList = entries
+    .map(([key, value]) => {
+      // prevent pushing old stock id into values
+      switch (key) {
+        case "stock_id":
+          return null;
+        default:
+          return value;
+      }
+    })
+    .filter((part) => part !== null);
+
+  // push old stock id as the last id to fulfill the last question mark
+  valueList.push(stockInfo.stock_id);
+  const [result] = await pool.query(
+    `UPDATE stock_basic_info SET ${keyList} where stock_id = ?`,
+    valueList
   );
   return result;
 };

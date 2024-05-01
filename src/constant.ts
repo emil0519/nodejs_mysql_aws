@@ -9,14 +9,37 @@ export enum FirmmindDataTypeEnum {
   TaiwanStockMonthRevenue = "TaiwanStockMonthRevenue",
 }
 
-export const HttpStatus = {
+type HttpStatusInfoType = {
+  code: number;
+  status: string;
+};
+
+type HttpStatusType = {
+  [key in HttpStatusEnum]: HttpStatusInfoType
+}
+
+export enum HttpStatusEnum {
+  OK = "OK",
+  CREATED = "CREATED",
+  NO_CONTENT = "NO_CONTENT",
+  BAD_REQUEST = "BAD_REQUEST",
+  NOT_FOUND = "NOT_FOUND",
+  CONFLICT = "CONFLICT",
+  INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR"
+}
+
+
+export const HttpStatus:HttpStatusType = {
   OK: { code: 200, status: 'success' },
   CREATED: { code: 201, status: 'created' },
   NO_CONTENT: { code: 204, status: 'no_content' },
   BAD_REQUEST: { code: 400, status: 'bad_request' },
   NOT_FOUND: { code: 404, status: 'not_found' },
-  INTERNAL_SERVER_ERROR: { code: 500, status: 'internal_server_error' }
+  CONFLICT: {code: 409, status: 'duplicate_data'},
+  INTERNAL_SERVER_ERROR: { code: 500, status: 'internal_server_error' },
 };
+
+
 
 export const placeholderForBasicInfo:StockInfo[] = [
   {
