@@ -21,31 +21,14 @@ export const getBasicInfo = async (req: Request, res: Response) => {
           "stock_id"
         );
         if (specificStockInfo.length) {
-          return res.send(
-            new ResponseClass(
-              HttpStatus.OK.status,
-              HttpStatus.OK.code,
-              specificStockInfo
-            )
-          );
+          return sendData(res, HttpStatusEnum.OK, specificStockInfo);
         }
-        return res.send(
-          new ResponseClass(
-            HttpStatus.NO_CONTENT.status,
-            HttpStatus.NO_CONTENT.code
-          )
-        );
+        return sendData(res, HttpStatusEnum.NO_CONTENT);
       } else {
         //  no specific dataId, get all stock
         const allStockInfo = await getAllStockInfo();
         if (allStockInfo.length) {
-          return res.send(
-            new ResponseClass(
-              HttpStatus.OK.status,
-              HttpStatus.OK.code,
-              allStockInfo
-            )
-          );
+          return sendData(res, HttpStatusEnum.OK, allStockInfo);
         } else {
           return res.send(
             new ResponseClass(
@@ -57,24 +40,10 @@ export const getBasicInfo = async (req: Request, res: Response) => {
       }
     } catch (error) {
       console.error("Error fetching stock info:", error);
-      return res
-        .status(HttpStatus.INTERNAL_SERVER_ERROR.code)
-        .send(
-          new ResponseClass(
-            HttpStatus.INTERNAL_SERVER_ERROR.status,
-            HttpStatus.INTERNAL_SERVER_ERROR.code
-          )
-        );
+      return sendData(res, HttpStatusEnum.INTERNAL_SERVER_ERROR);
     }
   } else {
-    return res
-      .status(HttpStatus.NOT_FOUND.code)
-      .send(
-        new ResponseClass(
-          HttpStatus.NOT_FOUND.status,
-          HttpStatus.NOT_FOUND.code
-        )
-      );
+    return sendData(res, HttpStatusEnum.NOT_FOUND);
   }
 };
 
@@ -85,18 +54,10 @@ export const createBasicInfo = async (req: Request, res: Response) => {
   }
   try {
     await createStockInfo(body);
-    return res.send(
-      new ResponseClass(HttpStatus.OK.status, HttpStatus.OK.code, body)
-    );
+    return sendData(res, HttpStatusEnum.OK, body);
   } catch (error) {
-    res
-      .status(HttpStatus.INTERNAL_SERVER_ERROR.code)
-      .send(
-        new ResponseClass(
-          HttpStatus.INTERNAL_SERVER_ERROR.status,
-          HttpStatus.INTERNAL_SERVER_ERROR.code
-        )
-      );
+    console.log("create basic info error", error);
+    return sendData(res, HttpStatusEnum.INTERNAL_SERVER_ERROR);
   }
 };
 

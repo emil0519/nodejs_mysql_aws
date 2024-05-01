@@ -108,8 +108,8 @@ export const createStockInfo = async (
 ): Promise<mysql.QueryResult> => {
   await pool.query(`USE ${dbName}`);
   const [result] = await pool.query(
-    `INSERT stock_basic_info (industry_category, stock_id, stock_name, type, date)`,
+    `INSERT INTO stock_basic_info (industry_category, stock_id, stock_name, type, date) VALUES (?, ?, ?, ?, ?)`,
     [stockInfo.industry_category, stockInfo.stock_id, stockInfo.stock_name, stockInfo.type, stockInfo.date]
-  );
+);
   return result;
 };
