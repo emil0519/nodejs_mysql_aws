@@ -9,3 +9,5 @@ export interface StockInfo {
 export interface StockInfoWithNewIdType extends StockInfo {
   new_stock_id: string;
 }
+
+export type StockInfoDeleteRequestType = Pick<StockInfo, "stock_id">;

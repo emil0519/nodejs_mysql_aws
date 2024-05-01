@@ -8,7 +8,7 @@ import {
 } from "../constant";
 import dotenv from "dotenv";
 import { query } from "../query";
-import { StockInfo, StockInfoWithNewIdType } from "../type";
+import { StockInfo, StockInfoDeleteRequestType, StockInfoWithNewIdType } from "../type";
 dotenv.config();
 
 // create pool, a series of connection to mysql instead of one connection at a time of create connection
@@ -119,6 +119,15 @@ export const createStockInfo = async (
   );
   return result;
 };
+
+export const deleteStockInfo = async(stockId: StockInfoDeleteRequestType["stock_id"]) =>{
+  await pool.query(`USE ${dbName}`);
+  const [result] = await pool.query(
+    `DELETE FROM stock_basic_info WHERE stock_id = ?`,
+    stockId
+  );
+  return result;
+}
 
 export const updateStockInfo = async (stockInfo: StockInfoWithNewIdType) => {
   await pool.query(`USE ${dbName}`);

@@ -5,9 +5,14 @@ import {
   getAllStockInfo,
   createStockInfo,
   updateStockInfo,
+  deleteStockInfo,
 } from "./database";
 import { ResponseClass } from "../domain/response";
-import { StockInfo, StockInfoWithNewIdType } from "../type";
+import {
+  StockInfo,
+  StockInfoDeleteRequestType,
+  StockInfoWithNewIdType,
+} from "../type";
 import { sendData } from "./utils";
 
 // TOASK: it will cluster all logic here, how to avoid?
@@ -50,7 +55,7 @@ export const getBasicInfo = async (req: Request, res: Response) => {
 
 export const createBasicInfo = async (req: Request, res: Response) => {
   const body: StockInfo = req.body;
-  if (await isStockExist(body)) {
+  if (await isStockExist(body.stock_id, body.stock_name)) {
     return sendData(res, HttpStatusEnum.CONFLICT, body);
   }
   try {
@@ -65,26 +70,41 @@ export const createBasicInfo = async (req: Request, res: Response) => {
 export const updateBasicInfo = async (req: Request, res: Response) => {
   const body: StockInfoWithNewIdType = req.body;
   try {
-    if (await isStockExist(body)) {
+    if (await isStockExist(body.stock_id, body.stock_name)) {
       await updateStockInfo(body);
       return sendData(res, HttpStatusEnum.OK, body);
     }
-    return sendData(res, HttpStatusEnum.NO_CONTENT)
+    return sendData(res, HttpStatusEnum.NO_CONTENT);
   } catch (errors) {
     console.error(`update stock error:${errors}`);
     return sendData(res, HttpStatusEnum.INTERNAL_SERVER_ERROR);
   }
 };
 
+export const deleteBasicInfo = async (req: Request, res: Response) => {
+  const body: StockInfoDeleteRequestType = req.body;
+  try {
+    if (await isStockExist(body.stock_id, "")) {
+      await deleteStockInfo(body.stock_id);
+      return sendData(res, HttpStatusEnum.OK, body);
+    }
+    return sendData(res, HttpStatusEnum.NOT_FOUND); 
+  } catch (errors) {
+    console.error(`delete stock error:${errors}`);
+    return sendData(res, HttpStatusEnum.INTERNAL_SERVER_ERROR);
+  }
+};
+
 const isStockExist = async (
-  body: StockInfo | StockInfoWithNewIdType
+  stockId: StockInfo["stock_id"],
+  stockName: StockInfo["stock_name"]
 ): Promise<boolean> => {
   const specificStockInfoWithID = await getSpecificStockInfo(
-    Number(body.stock_id),
+    Number(stockId),
     "stock_id"
   );
   const specificStockInfoWithName = await getSpecificStockInfo(
-    body.stock_name,
+    stockName,
     "stock_name"
   );
   if (specificStockInfoWithID.length || specificStockInfoWithName.length)
