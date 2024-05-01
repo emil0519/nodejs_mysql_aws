@@ -14,4 +14,9 @@ export const createStockBasicInfoSchema = z.object({
     ),
 });
 
+export const updateStockBasicInfoSchema = createStockBasicInfoSchema.extend({
+  new_stock_id: z.string(),
+});
+
+
 // https://dev.to/osalumense/validating-request-data-in-expressjs-using-zod-a-comprehensive-guide-3a0j

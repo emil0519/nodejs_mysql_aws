@@ -5,3 +5,7 @@ export interface StockInfo {
   type: string;
   date: string;
 }
+
+export interface StockInfoWithNewIdType extends StockInfo {
+  new_stock_id: string;
+}

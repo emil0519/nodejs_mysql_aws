@@ -8,7 +8,7 @@ import {
 } from "../constant";
 import dotenv from "dotenv";
 import { query } from "../query";
-import { StockInfo } from "../type";
+import { StockInfo, StockInfoWithNewIdType } from "../type";
 dotenv.config();
 
 // create pool, a series of connection to mysql instead of one connection at a time of create connection
@@ -109,7 +109,52 @@ export const createStockInfo = async (
   await pool.query(`USE ${dbName}`);
   const [result] = await pool.query(
     `INSERT INTO stock_basic_info (industry_category, stock_id, stock_name, type, date) VALUES (?, ?, ?, ?, ?)`,
-    [stockInfo.industry_category, stockInfo.stock_id, stockInfo.stock_name, stockInfo.type, stockInfo.date]
-);
+    [
+      stockInfo.industry_category,
+      stockInfo.stock_id,
+      stockInfo.stock_name,
+      stockInfo.type,
+      stockInfo.date,
+    ]
+  );
+  return result;
+};
+
+export const updateStockInfo = async (stockInfo: StockInfoWithNewIdType) => {
+  await pool.query(`USE ${dbName}`);
+  const entries = Object.entries(stockInfo);
+  // modify stock_id base on new_stock_id in request body
+  const keyList = entries
+    .map(([key, _]) => {
+      switch (key) {
+        case "stock_id":
+          return null;
+        case "new_stock_id":
+          return "stock_id = ?";
+        default:
+          return `${key} = ?`;
+      }
+    })
+    .filter((part) => part !== null)
+    .join(", ");
+
+  const valueList = entries
+    .map(([key, value]) => {
+      // prevent pushing old stock id into values
+      switch (key) {
+        case "stock_id":
+          return null;
+        default:
+          return value;
+      }
+    })
+    .filter((part) => part !== null);
+
+  // push old stock id as the last id to fulfill the last question mark
+  valueList.push(stockInfo.stock_id);
+  const [result] = await pool.query(
+    `UPDATE stock_basic_info SET ${keyList} where stock_id = ?`,
+    valueList
+  );
   return result;
 };

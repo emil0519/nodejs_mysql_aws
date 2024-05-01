@@ -4,9 +4,10 @@ import {
   getSpecificStockInfo,
   getAllStockInfo,
   createStockInfo,
+  updateStockInfo,
 } from "./database";
 import { ResponseClass } from "../domain/response";
-import { StockInfo } from "../type";
+import { StockInfo, StockInfoWithNewIdType } from "../type";
 import { sendData } from "./utils";
 
 // TOASK: it will cluster all logic here, how to avoid?
@@ -61,7 +62,23 @@ export const createBasicInfo = async (req: Request, res: Response) => {
   }
 };
 
-const isStockExist = async (body: StockInfo): Promise<boolean> => {
+export const updateBasicInfo = async (req: Request, res: Response) => {
+  const body: StockInfoWithNewIdType = req.body;
+  try {
+    if (await isStockExist(body)) {
+      await updateStockInfo(body);
+      return sendData(res, HttpStatusEnum.OK, body);
+    }
+    return sendData(res, HttpStatusEnum.NO_CONTENT)
+  } catch (errors) {
+    console.error(`update stock error:${errors}`);
+    return sendData(res, HttpStatusEnum.INTERNAL_SERVER_ERROR);
+  }
+};
+
+const isStockExist = async (
+  body: StockInfo | StockInfoWithNewIdType
+): Promise<boolean> => {
   const specificStockInfoWithID = await getSpecificStockInfo(
     Number(body.stock_id),
     "stock_id"
