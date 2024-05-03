@@ -13,12 +13,15 @@ dotenv.config();
 
 // create pool, a series of connection to mysql instead of one connection at a time of create connection
 export const pool = mysql
-  .createPool({
+  .createPool({ 
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
+    port: 3306,
+    database: dbName
   })
   .promise();
+  // https://www.youtube.com/watch?v=T-Pum2TraX4
 
 export const initDB = async (): Promise<void> => {
   try {
@@ -26,6 +29,7 @@ export const initDB = async (): Promise<void> => {
     await pool.query(`USE ${dbName}`);
     await pool.query(query.CREATE_STOCK_BASIC_INFO_IF_NOT_EXIST);
     await pool.query(query.CREATE_STOCK_REVENUE_IF_NOT_EXIST);
+    console.log(await pool.query("SELECT * FROM stock_api.stock_basic_info;"))
     if (await isTableEmpty(STOCK_BASIC_INFO_TABLE)) await seedStockInfo();
     if (await isTableEmpty(STOCK_REVENUE_TABLE)) await seedStockRevenue();
   } catch (error) {
