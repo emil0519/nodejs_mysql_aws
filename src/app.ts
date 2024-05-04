@@ -10,7 +10,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const allowOrigin = [
-  "http://localhost:3001",
+  "http://localhost:3001",  
+  "http://127.0.0.1:3001", 
   "https://nextjs-chart-delta.vercel.app",
 ];
 
@@ -29,10 +30,20 @@ app.use(express.json());
 
 // TOASK: Why app.use is necessary
 app.use((req, res, next) => {
+  // Logging the request method and the request URL
   console.log(`Received a ${req.method} request for ${req.url}`);
+
+  // Logging all headers
   console.log(`Headers: ${JSON.stringify(req.headers)}`);
+
+  // Specifically logging the Origin header
+    console.log(`Origin: ${req.headers.origin}`);
+    console.log(`Referer: ${req.headers.referer}`);
+    console.log(`IP Address: ${req.ip} or ${req.connection.remoteAddress}`);
+
   next();
 });
+
 
 app.listen(port, async () => {
   try {
