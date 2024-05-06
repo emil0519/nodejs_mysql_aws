@@ -14,8 +14,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const allowOrigin = [
-  "http://localhost:3001",  
-  "http://localhost:3002",  
+  "http://localhost:3001",   
   "http://127.0.0.1:3001", 
   "https://nextjs-chart-delta.vercel.app",
 ];
