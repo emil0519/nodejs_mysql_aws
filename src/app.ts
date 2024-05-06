@@ -14,7 +14,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const allowOrigin = [
-  "http://localhost:3001",
+  "http://localhost:3001",  
+  "http://localhost:3002",  
   "http://127.0.0.1:3001", 
   "https://nextjs-chart-delta.vercel.app",
 ];
@@ -28,7 +29,7 @@ const corsOptions = {
 
 const app = express();
 const port = 3002;
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 console.log('swaggerSpec',swaggerSpec)
 app.use(express.static(__dirname + "/public"));
 app.use(cors(corsOptions));
