@@ -6,7 +6,11 @@ import {
   updateBasicInfo,
 } from "../controller/stockBasicInfoController";
 import { validateData } from "../schemas/middleware/validationMiddleware";
-import { createStockBasicInfoSchema, deleteStockBasicInfoSchema, updateStockBasicInfoSchema } from "../schemas/basicInfoSchema";
+import {
+  createStockBasicInfoSchema,
+  deleteStockBasicInfoSchema,
+  updateStockBasicInfoSchema,
+} from "../schemas/basicInfoSchema";
 
 const stockRoute = express.Router();
 
@@ -15,6 +19,6 @@ stockRoute
   .get(getBasicInfo)
   .post(validateData(createStockBasicInfoSchema), createBasicInfo)
   .patch(validateData(updateStockBasicInfoSchema), updateBasicInfo)
-  .delete(validateData(deleteStockBasicInfoSchema), deleteBasicInfo)
+  .delete(validateData(deleteStockBasicInfoSchema), deleteBasicInfo);
 
 export default stockRoute;
