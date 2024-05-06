@@ -1,26 +1,30 @@
 import fs from "fs/promises";
+import path from "path";
 
-const CREATE_STOCK_BASIC_INFO_IF_NOT_EXIST = await fs.readFile(
-  "./src/query/basicInfo/CREATE_STOCK_BASIC_INFO_IF_NOT_EXIST.sql",
-  { encoding: "utf8" }
-);
-const CREATE_STOCK_REVENUE_IF_NOT_EXIST = await fs.readFile(
-  "./src/query/stockRevenue/CREATE_STOCK_REVENUE_IF_NOT_EXIST.sql",
-  { encoding: "utf8" }
-);
-const INSERT_STOCK_INFO = await fs.readFile(
-  "./src/query/basicInfo/INSERT_STOCK_INFO.sql",
-  { encoding: "utf8" }
-);
+const basePath = path.resolve(__dirname, "../query");
 
-const INSERT_STOCK_REVENUE = await fs.readFile(
-  "./src/query/stockRevenue/INSERT_STOCK_REVENUE.sql",
-  { encoding: "utf8" }
-);
-
-export const query = {
-  CREATE_STOCK_BASIC_INFO_IF_NOT_EXIST,
-  CREATE_STOCK_REVENUE_IF_NOT_EXIST,
-  INSERT_STOCK_INFO,
-  INSERT_STOCK_REVENUE
+const readFile = async (filePath:string) => {
+  try {
+    return await fs.readFile(filePath, { encoding: "utf8" });
+  } catch (error) {
+    console.error(`Error reading file ${filePath}:`, error);
+    return null;
+  }
 };
+
+const query = {
+  CREATE_STOCK_BASIC_INFO_IF_NOT_EXIST: await readFile(
+    path.join(basePath, "basicInfo", "CREATE_STOCK_BASIC_INFO_IF_NOT_EXIST.sql")
+  ),
+  CREATE_STOCK_REVENUE_IF_NOT_EXIST: await readFile(
+    path.join(basePath, "stockRevenue", "CREATE_STOCK_REVENUE_IF_NOT_EXIST.sql")
+  ),
+  INSERT_STOCK_INFO: await readFile(
+    path.join(basePath, "basicInfo", "INSERT_STOCK_INFO.sql")
+  ),
+  INSERT_STOCK_REVENUE: await readFile(
+    path.join(basePath, "stockRevenue", "INSERT_STOCK_REVENUE.sql")
+  ),
+};
+
+export default query;
