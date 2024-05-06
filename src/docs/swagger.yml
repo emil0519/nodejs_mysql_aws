@@ -1,0 +1,150 @@
+openapi: 3.0.0
+info:
+  title: Mock Finmindtrade API
+  version: 1.0.0
+  description: API documentation for Mock Finmindtrade API using Node.js. Only recognized domain can fetch this API
+servers:
+  - url: 'https://15.152.187.152/'
+paths:
+  /api/basicInfo:
+    get:
+      summary: Get stock information
+      description: Retrieves stock information from the database...
+      parameters:
+        - in: query
+          name: dataset
+          description: Dataset name (required)
+          required: true
+          schema:
+            type: string
+            default: TaiwanStockInfo
+        - in: query
+          name: dataId
+          description: Stock ID (optional)
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Stock information retrieved successfully
+        204:
+          description: No content, provided dataId does not exist
+        404:
+          description: Not found, something went wrong for domain/api address
+        500:
+          description: Internal server error
+    post:
+      summary: Add new stock information
+      description: Adds new stock information to the database...
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stock_id:
+                  type: string
+                industry_category:
+                  type: string
+                stock_name:
+                  type: string
+                type:
+                  type: string
+                date:
+                  type: string
+                  pattern: '^\d{4}-\d{2}-\d{2}$'
+              required:
+                - stock_id
+                - industry_category
+                - stock_name
+                - type
+                - date
+              example:
+                stock_id: "2890"
+                industry_category: "金融業"
+                stock_name: "永慶金"
+                type: "twse"
+                date: "2024-05-06"
+      responses:
+        200:
+          description: Stock information added successfully
+        409:
+          description: Conflict, stock already exist
+        500:
+          description: Internal server error
+    patch:
+      summary: Update stock information
+      description: Updates existing stock information. The old stock ID must match the existing record.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stock_id:
+                  type: string
+                  description: Current unique identifier for the stock to be updated
+                new_stock_id:
+                  type: string
+                  description: New unique identifier for the stock
+                industry_category:
+                  type: string
+                  description: Category of the industry the stock belongs to
+                stock_name:
+                  type: string
+                  description: Name of the stock
+                type:
+                  type: string
+                  description: Market type, e.g., TWSE
+                date:
+                  type: string
+                  description: Date of the record in YYYY-MM-DD format
+                  pattern: '^\d{4}-\d{2}-\d{2}$'
+              required:
+                - stock_id
+                - new_stock_id
+                - industry_category
+                - stock_name
+                - type
+                - date
+              example:
+                stock_id: "2890"
+                new_stock_id: "2891"
+                industry_category: "金融業"
+                stock_name: "永慶金"
+                type: "twse"
+                date: "2024-05-06"
+      responses:
+        200:
+          description: Stock information updated successfully
+        204:
+          description: No content, provided stock does not exist
+        500:
+          description: Internal server error
+    
+    delete:
+      summary: Delete stock information
+      description: Deletes stock information based on the provided stock ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stock_id:
+                  type: string
+                  description: Unique identifier for the stock to be deleted
+              required:
+                - stock_id
+            example:
+              stock_id: "2891"
+      responses:
+        200:
+          description: Stock information updated successfully
+        204:
+          description: No content, provided stock does not exist
+        500:
+          description: Internal server error
+

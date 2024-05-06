@@ -9,7 +9,7 @@ const options = {
       description: 'API documentation for Mock Finmindtrade API using Node.js. Only recongized domain can fetch this api',
     },
   },
-  apis: ['./src/route/*.ts'],
+  apis: ['./src/docs/*.yml'],
 };
 export const swaggerSpec = swaggerJSDoc(options);
 
