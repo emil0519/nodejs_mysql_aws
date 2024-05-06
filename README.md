@@ -3,7 +3,7 @@
   <h3 align="center">Emil - Node.js CRUD </h3>
 
   <p align="center">
-    A mock of [https://finmindtrade.com/](finmindtrade api), featuring CRUD, data validation on AWS cloud.
+    A mock of <a href="https://finmindtrade.com">finmindtrade api</a>, featuring CRUD, data validation on AWS cloud.
   </p>
     <div><a href="https://15.152.187.152/api-docs/">API Docs</a></div>
     <div><a href="https://nextjs-chart-delta.vercel.app/backOffice/">Frontend demo</a></div>
