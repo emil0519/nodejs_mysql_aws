@@ -5,6 +5,7 @@
   <p align="center">
     A mock of [https://finmindtrade.com/] (finmindtrade api), featuring CRUD, data validation on AWS cloud.
   </p>
+    <div><a href="https://15.152.187.152/api-docs/">API Docs</a></div>
     <div><a href="https://nextjs-chart-delta.vercel.app/backOffice/">Frontend demo</a></div>
 </div>
 <hr>
