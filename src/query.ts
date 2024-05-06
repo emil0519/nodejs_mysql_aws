@@ -1,5 +1,7 @@
 import fs from "fs/promises";
-import path from "path";
+import { fileURLToPath } from 'url';
+import path, { dirname } from 'path';
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const basePath = path.resolve(__dirname, "../query");
 
@@ -12,7 +14,7 @@ const readFile = async (filePath:string) => {
   }
 };
 
-const query = {
+export const query = {
   CREATE_STOCK_BASIC_INFO_IF_NOT_EXIST: await readFile(
     path.join(basePath, "basicInfo", "CREATE_STOCK_BASIC_INFO_IF_NOT_EXIST.sql")
   ),
@@ -26,5 +28,3 @@ const query = {
     path.join(basePath, "stockRevenue", "INSERT_STOCK_REVENUE.sql")
   ),
 };
-
-export default query;
