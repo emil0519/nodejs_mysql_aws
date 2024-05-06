@@ -28,7 +28,7 @@ const corsOptions = {
 
 const app = express();
 const port = 3002;
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(express.static(__dirname + "/public"));
 app.use(cors(corsOptions));
 app.use(express.json());
