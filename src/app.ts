@@ -17,6 +17,7 @@ const allowOrigin = [
   "http://localhost:3001",   
   "http://127.0.0.1:3001", 
   "https://nextjs-chart-delta.vercel.app",
+  "https://nextjs-chart-new-pattern-seo.vercel.app/"
 ];
 
 const corsOptions = {
